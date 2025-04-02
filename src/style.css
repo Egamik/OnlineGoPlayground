@@ -1,0 +1,56 @@
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #302f2f;
+}
+
+.menu-bar {
+  display: flex;
+  flex-direction: row;
+
+  border-bottom: 2px solid #ddd;
+  /* Subtle border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Soft shadow */
+  padding: 0 15px;
+  width: 100%;
+  background-color: #4d4d4d;
+  margin: 0;
+}
+
+.menu-bar .dropdown {
+  align-self: flex-start;
+  background-color: #ffff;
+  /* position: absolute; */
+  border-radius: 8px;
+  outline: black;
+  /* left rigth */
+  padding: 4px 4px;
+}
+
+.editor {
+  width: 95%;
+  max-width: 95vw;
+  /* position: absolute; */
+  background-color: #4d4d4d;
+  border-radius: 12px;
+  box-shadow: 0 0 10px black;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+textarea {
+  position: relative;
+  width: 95%;
+  height: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
