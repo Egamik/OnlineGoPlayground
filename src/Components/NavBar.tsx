@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 
 export const NavBar = () => {
 
@@ -7,21 +8,16 @@ export const NavBar = () => {
         {name: 'DOM', icon: '', route: '/dom' }
     ]
 
-    const handleButtonClick = (route: string) => {
-        window.location.href = route
-    }
-
     return (
         <aside>
-            <div>
+            <div className="side-navbar">
                 { navItems.map((item) => (
-                    <button
-                        key={item.name}
-                        onClick={() => handleButtonClick(item.route)}
+                    <NavLink
+                        to={item.route}
+                        className={({ isActive }) => `nav-button ${isActive ? 'active' : ''}`}
                     >
-                        {item.icon}
                         {item.name}
-                    </button>
+                    </NavLink>
                 )) }
             </div>
         </aside>

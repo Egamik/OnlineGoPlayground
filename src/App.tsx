@@ -1,15 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Header } from './Components/Header'
+// import { Header } from './Components/Header'
 import { Home } from "./Pages/Home"
 import { EditorPage } from "./Pages/EditorPage"
 import { DomView } from "./Pages/DomView"
+import { NavBar } from "./Components/NavBar"
+import { Footer } from "./Components/Footer"
 
 function App() {
 
 	return (
 		<BrowserRouter>
-			<Header />
+		<div className="app-container">
+			{/* <Header /> */}
 			<div className="main-wrapper">
+				<NavBar />
 				<main id="main">
 					<Routes>
 						<Route path="/" element={<Home/>} />
@@ -18,6 +22,8 @@ function App() {
 					</Routes>
 				</main>
 			</div>
+			<Footer/>
+		</div>
 		</BrowserRouter>
 	)
 }
