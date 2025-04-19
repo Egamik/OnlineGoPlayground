@@ -22,11 +22,12 @@ header {
 .main-wrapper {
 	display: flex;
 	flex-direction: row;
+	flex: 1;
 	align-items: stretch;
 	width: 100%;
 }
 
-/* Sidebar/Navbar styles */
+/* Side/Navbar styles */
 aside {
 	width: 180px;
 	align-self: stretch;
@@ -107,5 +108,59 @@ main#main {
 	.nav-button {
 		padding: 10px 15px;
 		white-space: nowrap;
+	}
+}
+/* Footer style */
+footer {
+	background-color: #3a3a3a;
+	/* Darker than page background */
+	color: #e0e0e0;
+	padding: 20px 0;
+	border-top: 1px solid #4d4d4d;
+	width: 100%;
+
+	p {
+		font-size: 10px;
+	}
+}
+
+.footer-content {
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 15px;
+}
+
+.social-links {
+	display: flex;
+	gap: 20px;
+}
+
+.social-icon {
+	color: #e0e0e0;
+	font-size: 24px;
+	transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+	color: #3a7bd5;
+	/* Matching your active button color */
+}
+
+.footer-info {
+	font-size: 14px;
+	text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.footer-content {
+		padding: 0 15px;
+	}
+
+	.social-links {
+		gap: 15px;
 	}
 }
