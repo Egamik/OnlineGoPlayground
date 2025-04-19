@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router"
-// import { Header } from './Components/Header'
+import { Header } from './Components/Header'
 import { Home } from "./Pages/Home"
 import { EditorPage } from "./Pages/EditorPage"
 import { DomView } from "./Pages/DomView"

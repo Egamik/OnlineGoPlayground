@@ -7,7 +7,7 @@ export const Footer = () => {
     const socialLinks = [
         {
             icon: <FontAwesomeIcon icon={faGithub} />,
-            url: '',
+            url: 'https://github.com/Egamik/INE5646-Web',
             label: 'Github'
         },
         {
