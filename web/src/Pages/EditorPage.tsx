@@ -4,7 +4,7 @@ import Editor, { OnMount } from "@monaco-editor/react"
 
 async function requestRunCode(code: string) {
     try {
-        const response = await axios.post('/api/run/go', {
+        const response = await axios.post('/run/go', {
             data: code
         })
 
