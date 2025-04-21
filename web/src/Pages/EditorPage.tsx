@@ -1,5 +1,18 @@
 import { useRef, useState } from "react"
+import axios from 'axios'
 import Editor, { OnMount } from "@monaco-editor/react"
+
+async function requestRunCode(code: string) {
+    try {
+        const response = await axios.post('/api/run/go', {
+            data: code
+        })
+
+        return response.data
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 export const EditorPage = () => {
     const editorRef = useRef<Parameters<OnMount>[0] | null>(null)
@@ -20,12 +33,11 @@ export const EditorPage = () => {
         setEditorContent(content)
         
         addToConsole("Running code...")
-        // Simulate execution (replace with actual Go execution)
-        setTimeout(() => {
-            addToConsole("Execution completed")
-            addToConsole(`Output length: ${content.length} characters`)
-            setIsRunning(false)
-        }, 1000)
+
+        requestRunCode(content)
+        .then(response => { addToConsole(response.data) })
+        .catch(err => { console.log(err) })
+        .finally(() => { setIsRunning(false) })
         
         return content
     }

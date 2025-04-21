@@ -1,0 +1,26 @@
+[req]
+default_bits       = 2048
+default_keyfile   = api-key.pem
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+prompt             = no
+
+[req_distinguished_name]
+countryName            = "BR"
+stateOrProvinceName    = "SC"
+localityName           = "Florianopolis"
+organizationName       = "UFSC"
+organizationalUnitName = "CTC"
+commonName             = "api"  # Replace with your domain or IP
+emailAddress           = "admin@example.com"
+
+[req_ext]
+subjectAltName = @alt_names
+
+[v3_ca]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1   = api      # Replace with your domain
+DNS.2   = www.api.com  # Optional: Add www subdomain

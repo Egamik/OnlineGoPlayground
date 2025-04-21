@@ -9,7 +9,7 @@ export const Home = () => {
                 <div className="home-text-content">
                     <p>
                         Editor e compilador online para linguagem de programação Golang desenvolvido para a disciplina INE5646 - Programação Web. 
-                        Este projeto foi desenvolvido em Abril de 2025 e está disponível via AWS.
+                        Este projeto foi desenvolvido em Abril de 2025 e está disponível via AWS. O código é executado em container docker isolado do restante do sistema.
                     </p>
                 </div>
             </div>

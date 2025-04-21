@@ -1,0 +1,27 @@
+[req]
+default_bits       = 2048
+default_keyfile   = server-key.pem
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+prompt             = no
+
+[req_distinguished_name]
+countryName            = "BR"
+stateOrProvinceName    = "Santa Catarina"
+localityName           = "Florianopolis"
+organizationName       = "UFSC"
+organizationalUnitName = "CTC"
+commonName             = "ec2-18-229-138-57.sa-east-1.compute.amazonaws.com"  # Replace with your domain or IP
+emailAddress           = "admin@example.com"
+
+[req_ext]
+subjectAltName = @alt_names
+
+[v3_ca]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1   = ec2-18-229-138-57.sa-east-1.compute.amazonaws.com      # Replace with your domain
+DNS.2   = www.ec2-18-229-138-57.sa-east-1.compute.amazonaws.com  # Optional: Add www subdomain
+IP.1    = 18.229.138.57                                          # Optional: Replace with your server's public IP

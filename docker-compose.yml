@@ -1,0 +1,24 @@
+services:
+    web:
+        image: nginx:latest
+        container_name: web
+        build:
+            context: ./web
+            dockerfile: Dockerfile
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - app-network
+        depends_on:
+            - api
+    api:
+        image: node:slim
+        container_name: api
+        build: api
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

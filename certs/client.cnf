@@ -1,0 +1,21 @@
+[req]
+default_bits       = 2048
+default_keyfile   = client-key.pem
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+prompt             = no
+
+[req_distinguished_name]
+countryName            = "BR"
+stateOrProvinceName    = "Santa Catarina"
+localityName           = "Florianopolis"
+organizationName       = "UFSC"
+organizationalUnitName = "CTC"
+commonName             = "nginx-client"  # Replace with your domain or IP
+emailAddress           = "client@example.com"
+
+[req_ext]
+basicConstraints       = CA:FALSE
+keyUsage               = digitalSignature, keyEncipherment
+extendedKeyUsage       = clientAuth
+subjectAltName         = email:client@example.com
