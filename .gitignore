@@ -1,5 +1,6 @@
 bak
 build/*
+build/assets
 # Logs
 logs
 *.log
