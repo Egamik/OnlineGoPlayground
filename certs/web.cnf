@@ -12,7 +12,7 @@ stateOrProvinceName    = "Santa Catarina"
 localityName           = "Florianopolis"
 organizationName       = "UFSC"
 organizationalUnitName = "CTC"
-commonName             = "ec2-18-229-138-57.sa-east-1.compute.amazonaws.com"  # Replace with your domain or IP
+commonName             = "websocket.vitor.egami.vms.ufsc.br"  # Replace with your domain or IP
 emailAddress           = "admin@example.com"
 
 [req_ext]
@@ -22,6 +22,6 @@ subjectAltName = @alt_names
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1   = ec2-18-229-138-57.sa-east-1.compute.amazonaws.com      # Replace with your domain
-DNS.2   = www.ec2-18-229-138-57.sa-east-1.compute.amazonaws.com  # Optional: Add www subdomain
-IP.1    = 18.229.138.57                                          # Optional: Replace with your server's public IP
+DNS.1   = websocket.vitor.egami.vms.ufsc.br      # Replace with your domain
+DNS.2   = www.websocket.vitor.egami.vms.ufsc.br  # Optional: Add www subdomain
+IP.1    = 150.162.244.13                                          # Optional: Replace with your server's public IP

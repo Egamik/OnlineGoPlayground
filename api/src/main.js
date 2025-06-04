@@ -15,10 +15,10 @@ const rmdir = util.promisify(fs.rm)
 // Limit body size
 app.use(express.json({ limit: '1mb' }))
 
-app.post('/go', async (req, res) => {
+app.post('/run/go', async (req, res) => {
     console.log('Execute go called!!!')
     try {
-        const { code } = req.body
+        const { code } = req.body.data
         
         if (!code || typeof code !== 'string') {
             return res.status(400).json({ error: 'Valid Go code is required' })
@@ -37,7 +37,9 @@ app.post('/go', async (req, res) => {
         // Cleanup
         await rmdir(workDir, { recursive: true, force: true })
 
-        res.json({ result })
+        console.log('Finished execution: ', result)
+
+        res.status(200).json({ result })
     } catch (error) {
         console.error('Execution error:', error)
         res.status(500).json({ 
@@ -54,7 +56,6 @@ async function executeGoCode(workDir) {
             Cmd: ['sh', '-c', 'cd /app && go mod init app && go mod tidy && go run .'],
             WorkingDir: '/app',
             HostConfig: {
-                Binds: [`${workDir}:/app`],
                 AutoRemove: true,
                 Memory: 100 * 1024 * 1024, // 100MB
                 NetworkMode: 'none',       // No network access
@@ -76,7 +77,9 @@ async function executeGoCode(workDir) {
             ]
         }
 
+        console.log('Before')
         docker.createContainer(containerOptions, (err, container) => {
+            console.log('Create container')
             if (err) return reject(err)
 
             let output = ''
