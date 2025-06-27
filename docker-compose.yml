@@ -13,11 +13,22 @@ services:
         depends_on:
             - api
     api:
-        image: node:slim
         container_name: api
         build: api
         networks:
             - app-network
+        depends_on:
+            - mongo
+    mongo:
+        image: mongo:latest
+        container_name: mongo
+        restart: always
+        ports:
+            - 27017:27017
+        networks:
+            - app-network
+        volumes:
+            - mongo-data:/data/db
 
 networks:
     app-network:
