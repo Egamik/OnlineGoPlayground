@@ -13,8 +13,8 @@ const registerUser = async (username, password) => {
         }
 
         const newUser = new User({
-            username,
-            password: password // Expects a hashed password 
+            username: username,
+            passwordHash: password // Expects a hashed password 
         })
         
         await newUser.save()
@@ -32,7 +32,7 @@ const loginUser = async (username, password) => {
     console.log('Login user called!!!')
     try {        
         if (!username || !password) {
-            throw new Error('Username and password are required')
+            throw new Error('User and password are required')
         }
 
         const user = await User.findOne({ username })
@@ -55,7 +55,28 @@ const loginUser = async (username, password) => {
     }
 }
 
+const updateUser = async (username, newPassword) => {
+    console.log('Update user called!!!')
+    try {
+        const user = await User.findOne({ username })
+        if (!user) {
+            throw new Error('User not found')
+        }
+
+        user.passwordHash = newPassword
+        await user.save()
+
+        console.log(`User updated: ${username}`)
+        return { message: 'User updated successfully' }
+
+    } catch (error) {
+        console.error('Update error:', error)
+        throw new Error('User update failed: ' + error.message)
+    }
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    updateUser
 }

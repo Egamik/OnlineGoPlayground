@@ -1,7 +1,7 @@
 'use strict'
 
-const fs = require('fs')
-const util = require('util')
+const fs = require('node:fs')
+const util = require('node:util')
 const writeFile = util.promisify(fs.writeFile)
 const mkdir = util.promisify(fs.mkdir)
 const rmdir = util.promisify(fs.rm)
@@ -12,21 +12,29 @@ const runGo = async (req, res) => {
     console.log('Execute go called!!!')
     try {
         const { code } = req.body.data
+
+        if (!req.user || !req.user.username) {
+            res.status(401).json({ error: 'Unauthorized' })
+            return
+        }
         
         if (!code || typeof code !== 'string') {
-            return res.status(400).json({ error: 'Valid Go code is required' })
+            res.status(400).json({ error: 'Valid Go code is required' })
+            return
         }
 
+        
         // Create unique directory for this execution
         const execId = crypto.randomBytes(8).toString('hex')
+        await gorunner.storeSubmission(req.user.username, execId, code)
         const workDir = path.join('/tmp', `go-exec-${execId}`)
         await mkdir(workDir)
 
         // Write main.go file
         await writeFile(path.join(workDir, 'main.go'), code)
 
-        const result = await gorunner.executeGoCode(code)
-        
+        const result = await gorunner.executeGoCode(workDir)
+
         // Cleanup
         await rmdir(workDir, { recursive: true, force: true })
         
@@ -43,7 +51,7 @@ const runGo = async (req, res) => {
     }
 }
 
-const registerUser = async (req, res) => {
+const registerUserHandler = async (req, res) => {
     console.log('Register user called!!!')
     const { username, password } = req.body.data
     
@@ -66,7 +74,7 @@ const registerUser = async (req, res) => {
     }
 }
 
-const loginUser = async (req, res) => {
+const loginUserHandler = async (req, res) => {
     console.log('Login user called!!!')
     const { username, password } = req.body.data
 
@@ -88,6 +96,26 @@ const loginUser = async (req, res) => {
     }
 }
 
+const updateUserHandler = async (req, res) => {
+    const user = req.user
+    const { newPassword } = req.body.data
+
+    try {
+        if (!user || !newPassword) {
+            res.status(400).json({ error: 'User and new password are required' })
+            return
+        }
+
+        const response = await updateUser(user.username, newPassword)
+        res.status(200).json(response)
+    } catch (error) {
+        console.error('Update error:', error)
+        res.status(500).json({
+            error: 'User update failed'
+        })
+    }
+}
+
 // Middleware to authenticate JWT token
 const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1]
@@ -101,6 +129,8 @@ const authenticateToken = (req, res, next) => {
 
 module.exports = {
     runGo,
-    registerUser,
+    registerUserHandler,
+    loginUserHandler,
+    updateUserHandler,
     authenticateToken
 }

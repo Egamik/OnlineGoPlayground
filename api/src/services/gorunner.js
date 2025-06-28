@@ -1,6 +1,20 @@
 'use strict'
 
-export async function executeGoCode(workDir) {
+const docker = require('dockerode')
+const Submission = require('../model/submission')
+
+async function storeSubmission(username, code, submissionID) {
+    try {
+        const submission = new Submission({ username, submissionID, code })
+        await submission.save()
+        console.log('Submission stored successfully')
+    } catch (error) {
+        console.error('Error storing submission:', error)
+        throw new Error('Failed to store submission: ' + error.message)
+    }
+}
+
+async function executeGoCode(workDir) {
     return new Promise((resolve, reject) => {
         const containerOptions = {
             Image: 'golang:latest-alpine',
@@ -72,4 +86,9 @@ export async function executeGoCode(workDir) {
             })
         })
     })
+}
+
+module.exports = {
+    storeSubmission,
+    executeGoCode
 }
