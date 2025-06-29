@@ -24,8 +24,8 @@ const serverOptions = {
     key: fs.readFileSync('../certs/api-key.pem'),
     cert: fs.readFileSync('../certs/api-crt.pem'),
     ca: fs.readFileSync('../certs/ca-crt.pem'),
-    requestCert: true,
-    rejectUnauthorized: true
+    requestCert: false,  // Change for producttion
+    rejectUnauthorized: false
 }
 
 https.createServer(serverOptions, app).listen(PORT, () => {
