@@ -27,8 +27,6 @@ services:
             - 27017:27017
         networks:
             - app-network
-        volumes:
-            - mongo-data:/data/db
 
 networks:
     app-network:
