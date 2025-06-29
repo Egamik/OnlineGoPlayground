@@ -9,7 +9,7 @@ const registerUser = async (username, password) => {
 
         const userFromDb = await User.findOne({ username })
         if (userFromDb) {
-            return res.status(400).json({ error: 'Username already exists' })
+            throw new Error("Username already exists")
         }
 
         const newUser = new User({
