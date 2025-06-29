@@ -35,9 +35,9 @@ export const EditorPage = () => {
         addToConsole("Running code...")
 
         requestRunCode(content)
-        .then(response => { addToConsole(response.data) })
-        .catch(err => { console.log(err) })
-        .finally(() => { setIsRunning(false) })
+            .then(response => { addToConsole(response.data) })
+            .catch(err => { console.log(err) })
+            .finally(() => { setIsRunning(false) })
         
         return content
     }
@@ -52,6 +52,10 @@ export const EditorPage = () => {
 
     const handleClearConsole = () => {
         setConsoleOutput([])
+    }
+
+    const handleLoadSubmission = () => {
+
     }
 
     const addToConsole = (message: string) => {
@@ -81,6 +85,17 @@ export const EditorPage = () => {
                 >
                     Clear Console
                 </button>
+                <button
+                    onClick={handleLoadSubmission}
+                    className="editor-button console-button"
+                >
+                    Load
+                </button>
+                <button
+                    className="editor-button console-button"
+                >
+                    Share
+                </button>
                 <div className="editor-info">
                     {editorContent.length} chars | {editorContent.split("\n").length} lines
                 </div>
@@ -91,7 +106,7 @@ export const EditorPage = () => {
                 width="90vw"
                 theme="vs-dark"
                 defaultLanguage="go"
-                defaultValue="// Enter your Go code here"
+                defaultValue=""
                 onMount={handleEditorDidMount}
                 onChange={(value) => setEditorContent(value || "")}
                 options={{
