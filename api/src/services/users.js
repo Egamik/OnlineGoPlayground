@@ -1,6 +1,6 @@
 'use strict'
 const jwt = require('jsonwebtoken')
-const User = require('../model/user')
+const User = require('../model/user.js')
 const JWT_SECRET = process.env.JWT_SECRET || 'some-default-secret'
 
 const registerUser = async (username, password) => {

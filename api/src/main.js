@@ -2,7 +2,7 @@ const express = require('express')
 const https = require('https')
 const mongoose = require('mongoose')
 const fs = require('fs')
-const router = require('./routes/routes')
+const router = require('./routes/app.routes.js')
 
 const app = express()
 const PORT = 8080
