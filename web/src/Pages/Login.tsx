@@ -1,18 +1,36 @@
-
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { AuthContext } from "../util/UserCtx"
 import axios from "axios"
 
 export const LoginPage = () => {
     const authCtx = useContext(AuthContext)
-    const [username, setUsername] = useState(authCtx?.username || "")
-    const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const usernameRef = useRef<HTMLInputElement>(null)
+    const passwordRef = useRef<HTMLInputElement>(null)
+
     if (!authCtx) {
         return <div>Error: AuthContext is not available</div>
     }
 
     const handleLogin = async () => {
+        const username = usernameRef.current?.value || ""
+        
+        if (!username || username.length < 3) {
+            setError('Username must be at least 3 characters long.')
+            return
+        }
+        
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            setError('Username can only contain letters, numbers, and underscores.')
+            return
+        }
+
+        const password = passwordRef.current?.value || ""
+        if (!password || password.length < 5) {
+            setError('Password must be at least 5 characters long.')
+            return
+        }
+
         try {
             const response = await axios.post('/api/user/login', { username, password })
             if (response.status === 200) {
@@ -37,6 +55,24 @@ export const LoginPage = () => {
     }
 
     const handleSignup = async () => {
+        const username = usernameRef.current?.value || ""
+        
+        if (!username || username.length < 3) {
+            setError('Username must be at least 3 characters long.')
+            return
+        }
+        
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            setError('Username can only contain letters, numbers, and underscores.')
+            return
+        }
+
+        const password = passwordRef.current?.value || ""
+        if (!password || password.length < 5) {
+            setError('Password must be at least 5 characters long.')
+            return
+        }
+
         try {
             const response = await axios.post('/api/user/signup', { username, password })
             if (response.status === 200) {
@@ -57,64 +93,33 @@ export const LoginPage = () => {
     }
 
     return (
-        <div style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#f5f5f5"
-        }}>
-            <div style={{
-                background: "#fff",
-                padding: "2rem",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                minWidth: "320px"
-            }}>
+        <div className="login-bg">
+            <div className="login-form">
                 <h2 style={{ textAlign: "center" }}>Login</h2>
                 <div style={{ marginBottom: "1rem" }}>
                     <input
                         type="text"
                         placeholder="Username"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        ref={usernameRef}
                         style={{ width: "100%", padding: "0.5rem", marginBottom: "0.5rem" }}
                     />
                     <input
                         type="password"
                         placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        ref={passwordRef}
                         style={{ width: "100%", padding: "0.5rem" }}
                     />
                 </div>
                 {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
                 <button
                     onClick={handleLogin}
-                    style={{
-                        width: "100%",
-                        padding: "0.5rem",
-                        marginBottom: "0.5rem",
-                        background: "#1976d2",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer"
-                    }}
+                    className="login-btn"
                 >
                     Login
                 </button>
                 <button
                     onClick={handleSignup}
-                    style={{
-                        width: "100%",
-                        padding: "0.5rem",
-                        background: "#e0e0e0",
-                        color: "#333",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer"
-                    }}
+                    className="signup-btn"
                 >
                     Sign up
                 </button>

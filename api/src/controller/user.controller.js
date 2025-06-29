@@ -1,7 +1,5 @@
 'use strict'
 
-const jwt = require('jsonwebtoken')
-const JWT_SECRET = process.env.JWT_SECRET || 'some-default-secret'
 const userService = require('../services/users')
 
 const registerUserHandler = async (req, res) => {

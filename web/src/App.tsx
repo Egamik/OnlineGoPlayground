@@ -4,6 +4,8 @@ import { EditorPage } from "./Pages/EditorPage"
 import { DomView } from "./Pages/DomView"
 import { NavBar } from "./Components/NavBar"
 import { Footer } from "./Components/Footer"
+import RouteWrapper from "./Components/RouteWrapper"
+import { LoginPage } from "./Pages/Login"
 
 function App() {
 
@@ -15,9 +17,10 @@ function App() {
 				<NavBar />
 				<main id="main">
 					<Routes>
-						<Route path="/" element={<Home/>} />
-						<Route path="/editor" element={<EditorPage/>} />
-						<Route path="/dom" element={<DomView/>}/>
+						<Route path="/login" element={<LoginPage/>} />
+						<Route path="/" element={<RouteWrapper component={Home} />} />
+						<Route path="/editor" element={<RouteWrapper component={EditorPage} />} />
+						<Route path="/dom" element={<RouteWrapper component={DomView} />} />
 					</Routes>
 				</main>
 			</div>

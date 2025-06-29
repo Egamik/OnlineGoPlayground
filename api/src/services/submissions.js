@@ -36,6 +36,7 @@ async function shareSubmission(submissionID, ownerUsername, targetUsername) {
     try {
         const owner = await User.findOne({ username: ownerUsername })
         const target = await User.findOne({ username: targetUsername })
+        
         if (!owner || !target) throw new Error('User not found')
     
         const submission = await Submission.findOne({ submissionID, ownerID: owner._id })
@@ -52,8 +53,22 @@ async function shareSubmission(submissionID, ownerUsername, targetUsername) {
     }
 }
 
+async function getSubmissionsByUser(username) {
+    try {
+        const user = await User.findOne({ username })
+        if (!user) throw new Error('User not found')
+
+        const submissions = await Submission.find({ ownerID: user._id })
+        return submissions
+    } catch (error) {
+        console.error('Error fetching submissions by owner:', error)
+        throw new Error('Failed to fetch submissions by owner: ' + error.message)
+    }
+}
+
 module.exports = {
     storeSubmission,
     getSubmissionById,
-    shareSubmission
+    shareSubmission,
+    getSubmissionsByUser
 }
