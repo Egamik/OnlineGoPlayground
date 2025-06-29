@@ -40,6 +40,34 @@ const getSubmissionByIdHandler = async (req, res) => {
     }
 }
 
+const getSubmissionsByUserHandler = async (req, res) => {
+    console.log('Get submissions by user called!!!')
+    const username = req.user.username
+
+    if (!username) {
+        res.status(401).json({ error: 'Unauthorized' })
+        return
+    }
+    
+    try {
+        // Get own submissions
+        const ownSubmissions = await submissionsService.getSubmissionsByUser(username)
+        // Get submissions shared with this user
+        const sharedSubmissions = await submissionsService.getSubmissionsSharedWithUser(username)
+        // Merge and remove duplicates (by submissionID)
+        const allSubmissions = [
+            ...ownSubmissions,
+            ...sharedSubmissions.filter(
+                s => !ownSubmissions.some(os => os.submissionID === s.submissionID)
+            )
+        ]
+        res.status(200).json(allSubmissions)
+    } catch (error) {
+        console.error('Error fetching submissions by user:', error)
+        res.status(404).json({ error: error.message })
+    }
+}
+
 // Share a submission with another user
 const shareSubmissionHandler = async (req, res) => {
     const { submissionID, targetUsername } = req.body.data
@@ -65,5 +93,6 @@ const shareSubmissionHandler = async (req, res) => {
 module.exports = {
     storeSubmissionHandler,
     getSubmissionByIdHandler,
-    shareSubmissionHandler
+    shareSubmissionHandler,
+    getSubmissionsByUserHandler
 }

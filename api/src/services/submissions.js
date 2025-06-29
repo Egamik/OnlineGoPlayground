@@ -66,9 +66,23 @@ async function getSubmissionsByUser(username) {
     }
 }
 
+async function getSubmissionsSharedWithUser(username) {
+    try {
+        const user = await User.findOne({ username })
+        if (!user) throw new Error('User not found')
+        // Find submissions where sharedWith contains this user's ObjectId
+        const submissions = await Submission.find({ sharedWith: user._id })
+        return submissions
+    } catch (error) {
+        console.error('Error fetching shared submissions:', error)
+        throw new Error('Failed to fetch shared submissions: ' + error.message)
+    }
+}
+
 module.exports = {
     storeSubmission,
     getSubmissionById,
     shareSubmission,
+    getSubmissionsSharedWithUser,
     getSubmissionsByUser
 }

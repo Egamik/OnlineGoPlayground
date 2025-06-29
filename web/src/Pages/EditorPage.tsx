@@ -1,24 +1,17 @@
 import { useRef, useState } from "react"
 import axios from 'axios'
 import Editor, { OnMount } from "@monaco-editor/react"
+import SubmissionModal from "../Components/SubmissionModal"
 
-async function requestRunCode(code: string) {
-    try {
-        const response = await axios.post('/run/go', {
-            data: code
-        })
-
-        return response.data
-    } catch (err) {
-        console.log(err)
-    }
-}
+type ModalPurpose = "load" | "share" | null
 
 export const EditorPage = () => {
     const editorRef = useRef<Parameters<OnMount>[0] | null>(null)
     const [editorContent, setEditorContent] = useState("")
     const [consoleOutput, setConsoleOutput] = useState<string[]>([])
     const [isRunning, setIsRunning] = useState(false)
+    const [showSubmissionModal, setShowSubmissionModal] = useState(false)
+    const [modalPurpose, setModalPurpose] = useState<ModalPurpose>(null)
 
     const handleEditorDidMount: OnMount = (editor) => {
         editorRef.current = editor
@@ -34,9 +27,12 @@ export const EditorPage = () => {
         
         addToConsole("Running code...")
 
-        requestRunCode(content)
+        axios.post("/api/run/go", { code: content })
             .then(response => { addToConsole(response.data) })
-            .catch(err => { console.log(err) })
+            .catch(err => { 
+                console.error(err) 
+                addToConsole("Error running code: " + err)
+            })
             .finally(() => { setIsRunning(false) })
         
         return content
@@ -55,7 +51,45 @@ export const EditorPage = () => {
     }
 
     const handleLoadSubmission = () => {
+        setModalPurpose("load")
+        setShowSubmissionModal(true)
+    }
 
+    const handleShareClick = () => {
+        setModalPurpose("share")
+        setShowSubmissionModal(true)
+    }
+
+    const handleModalClose = () => {
+        setShowSubmissionModal(false)
+        setModalPurpose(null)
+    }
+
+    // Handler for loading a submission into the editor
+    const handleSubmissionLoad = async (submissionID: string) => {
+        setShowSubmissionModal(false)
+        setModalPurpose(null)
+        try {
+            const res = await axios.get(`/api/submissions/id/${submissionID}`)
+            if (res.status === 200 && res.data && res.data.code && editorRef.current) {
+                editorRef.current.setValue(res.data.code)
+                setEditorContent(res.data.code)
+                addToConsole(`Loaded submission: ${submissionID}`)
+            } else {
+                addToConsole("Failed to load submission.")
+            }
+        } catch (err) {
+            console.error("Error loading submission:", err)
+            addToConsole("Error loading submission.")
+        }
+    }
+
+    // Handler for sharing a submission (implement your sharing logic here)
+    const handleSubmissionShare = (submissionID: string) => {
+        setShowSubmissionModal(false)
+        setModalPurpose(null)
+        addToConsole(`Share logic for submission: ${submissionID}`)
+        // You can open another modal or call your share API here
     }
 
     const addToConsole = (message: string) => {
@@ -92,6 +126,7 @@ export const EditorPage = () => {
                     Load
                 </button>
                 <button
+                    onClick={handleShareClick}
                     className="editor-button console-button"
                 >
                     Share
@@ -137,6 +172,12 @@ export const EditorPage = () => {
                     )}
                 </div>
             </div>
+            {showSubmissionModal && (
+                <SubmissionModal
+                    onSelect={modalPurpose === "load" ? handleSubmissionLoad : handleSubmissionShare}
+                    onClose={handleModalClose}
+                />
+            )}
         </div>
     )
 }
