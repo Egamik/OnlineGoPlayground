@@ -2,10 +2,6 @@ FROM nginx:alpine3.21-slim
 
 RUN rm /etc/nginx/conf.d/*
 
-# RUN addgroup -S nginx && adduser -S -G nginx nginx
-
-USER nginx
-
 COPY ./build /usr/share/nginx/html
 COPY ./aa/aa12 /usr/share/nginx/
 COPY ./aa/aa14 /usr/share/nginx/
