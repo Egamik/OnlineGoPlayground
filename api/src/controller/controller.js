@@ -7,6 +7,7 @@ const mkdir = util.promisify(fs.mkdir)
 const rmdir = util.promisify(fs.rm)
 
 const gorunner = require('../services/gorunner')
+const userService = require('../services/users')
 
 const runGo = async (req, res) => {
     console.log('Execute go called!!!')
@@ -26,8 +27,11 @@ const runGo = async (req, res) => {
         
         // Create unique directory for this execution
         const execId = crypto.randomBytes(8).toString('hex')
+
         await gorunner.storeSubmission(req.user.username, execId, code)
+        
         const workDir = path.join('/tmp', `go-exec-${execId}`)
+        
         await mkdir(workDir)
 
         // Write main.go file
@@ -62,7 +66,7 @@ const registerUserHandler = async (req, res) => {
             return
         }
         
-        const response = await registerUser(username, password)
+        const response = await userService.registerUser(username, password)
         res.status(200).json(response)
 
     } catch (error) {
@@ -84,7 +88,7 @@ const loginUserHandler = async (req, res) => {
             return
         }
 
-        const token = await loginUser(username, password)
+        const token = await userService.loginUser(username, password)
         res.status(200).json({ token })
 
     } catch (error) {
@@ -106,7 +110,7 @@ const updateUserHandler = async (req, res) => {
             return
         }
 
-        const response = await updateUser(user.username, newPassword)
+        const response = await userService.updateUser(user.username, newPassword)
         res.status(200).json(response)
     } catch (error) {
         console.error('Update error:', error)
