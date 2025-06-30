@@ -2,6 +2,7 @@
 
 PROJECT_ROOT=$(pwd)
 
+rm -f $PROJECT_ROOT/certs/*.pem
 rm -f $PROJECT_ROOT/web/certs/*.pem
 rm -f $PROJECT_ROOT/api/certs/*.pem
 
