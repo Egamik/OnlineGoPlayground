@@ -74,7 +74,7 @@ export const LoginPage = () => {
         }
 
         try {
-            const response = await axios.post('/api/user/signup', { username, password })
+            const response = await axios.post('/api/user/register', { username, password })
             if (response.status === 200) {
                 console.log('Signup successful:', response.data)
                 // Optionally redirect to login or perform any other action after successful signup
