@@ -1,6 +1,6 @@
 [req]
 default_bits       = 2048
-default_keyfile   = api-key.pem
+default_keyfile    = api-key.pem
 distinguished_name = req_distinguished_name
 req_extensions     = req_ext
 x509_extensions    = v3_ca
@@ -12,7 +12,7 @@ stateOrProvinceName    = "SC"
 localityName           = "Florianopolis"
 organizationName       = "UFSC"
 organizationalUnitName = "CTC"
-commonName             = "api_stream"  # Replace with your domain or IP
+commonName             = "api"  # <---- Mude de "api_stream" para "api"
 emailAddress           = "admin@example.com"
 
 [req_ext]
@@ -22,5 +22,5 @@ subjectAltName = @alt_names
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1   = api      # Replace with your domain
-DNS.2   = www.api.com  # Optional: Add www subdomain
+DNS.1   = api       # deve bater com o hostname usado no proxy_pass
+DNS.2   = api_stream  # opcional, alias se quiser manter
