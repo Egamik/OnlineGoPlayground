@@ -37,11 +37,11 @@ const loginUser = async (username, password) => {
 
         const user = await User.findOne({ username })
         if (!user) {
-            throw new Error('Invalid username or password')
+            throw new Error('Invalid username')
         }
 
-        if (user.password !== password) {
-            throw new Error('Invalid username or password')
+        if (user.passwordHash !== password) {
+            throw new Error('Invalid password')
         }
 
         const token = jwt.sign({ username: user.username }, JWT_SECRET, { expiresIn: '1h' })
