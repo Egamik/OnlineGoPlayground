@@ -12,7 +12,7 @@ stateOrProvinceName    = "SC"
 localityName           = "Florianopolis"
 organizationName       = "UFSC"
 organizationalUnitName = "CTC"
-commonName             = "api"  # Replace with your domain or IP
+commonName             = "api_stream"  # Replace with your domain or IP
 emailAddress           = "admin@example.com"
 
 [req_ext]
