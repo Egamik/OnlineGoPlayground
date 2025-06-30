@@ -29,7 +29,13 @@ const SubmissionModal: React.FC<SubmissionModalProps> = ({ onSelect, onClose }) 
                     return
                 }
 
-                const res = await axios.get(`/api/submissions/user/${authCtx.username}`)
+                const res = await axios.get(`/api/submissions/user/${authCtx.username}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${authCtx.token}`
+                        }
+                    }
+                )
                 if (res.status === 200 && Array.isArray(res.data)) {
                     // Sort by createdAt descending
                     const sorted = [...res.data].sort(

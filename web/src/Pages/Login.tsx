@@ -5,6 +5,7 @@ import { useNavigate } from "react-router"
 
 export const LoginPage = () => {
     const authCtx = useContext(AuthContext)
+    const [success, setSuccess] = useState("")
     const [error, setError] = useState("")
     const usernameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
@@ -81,7 +82,7 @@ export const LoginPage = () => {
             const response = await axios.post('/api/user/register', { username, password })
             if (response.status === 200) {
                 console.log('Signup successful:', response.data)
-                // Optionally redirect to login or perform any other action after successful signup
+                setSuccess('Sign up successful!')
             } else {
                 console.error('Signup failed:', response.data)
                 setError('Signup failed. Please try again.')
@@ -114,6 +115,7 @@ export const LoginPage = () => {
                         style={{ width: "100%", padding: "0.5rem" }}
                     />
                 </div>
+                {success && <div style={{ color: "green", marginBottom: "1rem" }}>{success}</div>}
                 {error && <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>}
                 <button
                     onClick={handleLogin}
