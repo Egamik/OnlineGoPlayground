@@ -1,11 +1,13 @@
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import axios from 'axios'
 import Editor, { OnMount } from "@monaco-editor/react"
 import SubmissionModal from "../Components/SubmissionModal"
+import { AuthContext } from "../util/UserCtx"
 
 type ModalPurpose = "load" | "share" | null
 
 export const EditorPage = () => {
+    const authCtx = useContext(AuthContext)
     const editorRef = useRef<Parameters<OnMount>[0] | null>(null)
     const [editorContent, setEditorContent] = useState("")
     const [consoleOutput, setConsoleOutput] = useState<string[]>([])
@@ -13,6 +15,12 @@ export const EditorPage = () => {
     const [showSubmissionModal, setShowSubmissionModal] = useState(false)
     const [modalPurpose, setModalPurpose] = useState<ModalPurpose>(null)
 
+    if (!authCtx) {
+        return <div>Error: AuthContext is not available</div>
+    }
+    if (!authCtx.auth) {
+        return <div>Please log in to access the editor.</div>
+    }
     const handleEditorDidMount: OnMount = (editor) => {
         editorRef.current = editor
         addToConsole("Editor initialized - Ready for Go code")
@@ -27,7 +35,13 @@ export const EditorPage = () => {
         
         addToConsole("Running code...")
 
-        axios.post("/api/run/go", { code: content })
+        axios.post("/api/run/go", { code: content }
+            ,{
+                headers: {
+                    'Authorization': `Bearer ${authCtx.token}`,
+                }
+            }
+        )
             .then(response => { addToConsole(response.data) })
             .catch(err => { 
                 console.error(err) 

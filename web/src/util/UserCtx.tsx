@@ -4,7 +4,9 @@ interface AuthContextValue {
     auth:       boolean,
     setAuth:    React.Dispatch<React.SetStateAction<boolean>>,
     username:   string,
-    setUsername: React.Dispatch<React.SetStateAction<string>>
+    setUsername: React.Dispatch<React.SetStateAction<string>>,
+    token:      string,
+    setToken:   React.Dispatch<React.SetStateAction<string>>
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -25,6 +27,10 @@ const AuthProvider: FC<{ children: ReactNode}> = ({ children }) => {
         return sessionStorage.getItem('username') || ""
     })
 
+    const [token, setToken] = useState<string>(() => {
+        return sessionStorage.getItem('token') || ""
+    })
+
     useEffect(() => {
         sessionStorage.setItem('savedAuth', auth.toString())
     }, [auth])
@@ -33,8 +39,12 @@ const AuthProvider: FC<{ children: ReactNode}> = ({ children }) => {
         sessionStorage.setItem('username', username)
     }, [username])
 
+    useEffect(() => {
+        sessionStorage.setItem('token', token)
+    }, [token])
+
     return (
-        <AuthContext.Provider value={{ auth, setAuth, username, setUsername }}>
+        <AuthContext.Provider value={{ auth, setAuth, username, setUsername, token, setToken }}>
             {children}
         </AuthContext.Provider>
     )

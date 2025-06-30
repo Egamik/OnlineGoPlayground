@@ -1,12 +1,14 @@
 import { useContext, useRef, useState } from "react"
 import { AuthContext } from "../util/UserCtx"
 import axios from "axios"
+import { useNavigate } from "react-router"
 
 export const LoginPage = () => {
     const authCtx = useContext(AuthContext)
     const [error, setError] = useState("")
     const usernameRef = useRef<HTMLInputElement>(null)
     const passwordRef = useRef<HTMLInputElement>(null)
+    const navigate = useNavigate()
 
     if (!authCtx) {
         return <div>Error: AuthContext is not available</div>
@@ -36,8 +38,10 @@ export const LoginPage = () => {
             if (response.status === 200) {
                 authCtx.setAuth(true)
                 authCtx.setUsername(username)
+                authCtx.setToken(response.data.token) // Save token in context
                 console.log('Login successful:', response.data)
                 // Redirect or perform any other action after successful login
+                navigate('/')
             } else {
                 console.error('Login failed:', response.data)
                 authCtx.setAuth(false)
