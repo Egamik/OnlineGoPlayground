@@ -52,7 +52,7 @@ const SubmissionModal: React.FC<SubmissionModalProps> = ({ onSelect, onClose }) 
             setLoading(false)
         }
         fetchSubmissions()
-    }, [authCtx?.username])
+    }, [authCtx?.username, authCtx?.token])
 
     return (
         <div className="modal-bg">
