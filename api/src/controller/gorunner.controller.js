@@ -13,7 +13,7 @@ const subService = require('../services/submissions')
 const runGo = async (req, res) => {
     console.log('Execute go called!!!')
     try {
-        const { code } = req.body.data
+        const { code } = req.body
 
         if (!req.user || !req.user.username) {
             res.status(401).json({ error: 'Unauthorized' })

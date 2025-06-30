@@ -4,7 +4,7 @@ const userService = require('../services/users')
 
 const registerUserHandler = async (req, res) => {
     console.log('Register user called!!!')
-    const { username, password } = req.body.data
+    const { username, password } = req.body
     
     try {
         if (!username || !password) {
@@ -25,7 +25,7 @@ const registerUserHandler = async (req, res) => {
 
 const loginUserHandler = async (req, res) => {
     console.log('Login user called!!!')
-    const { username, password } = req.body.data
+    const { username, password } = req.body
 
     try {
         if (!username || !password) {
@@ -47,7 +47,7 @@ const loginUserHandler = async (req, res) => {
 
 const updateUserHandler = async (req, res) => {
     const user = req.user
-    const { newPassword } = req.body.data
+    const { newPassword } = req.body
 
     if (!user) {
         return res.status(401).json({ error: 'Unauthorized' })

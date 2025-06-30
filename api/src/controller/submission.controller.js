@@ -3,7 +3,7 @@ const submissionsService = require('../services/submissions')
 // Store a new submission
 const storeSubmissionHandler = async (req, res) => {
     console.log('Store submission called!!!')
-    const { submissionID, code } = req.body.data
+    const { submissionID, code } = req.body
     const username = req.user.username
 
     if (!submissionID || !code) {
@@ -70,7 +70,7 @@ const getSubmissionsByUserHandler = async (req, res) => {
 
 // Share a submission with another user
 const shareSubmissionHandler = async (req, res) => {
-    const { submissionID, targetUsername } = req.body.data
+    const { submissionID, targetUsername } = req.body
     const ownerUsername = req.user.username
 
     if (!submissionID || !targetUsername) {
