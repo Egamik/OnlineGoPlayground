@@ -1,6 +1,7 @@
 'use strict'
 
-const docker = require('dockerode')
+const Docker = require('dockerode')
+const docker = new Docker()
 
 async function executeGoCode(workDir) {
     return new Promise((resolve, reject) => {
