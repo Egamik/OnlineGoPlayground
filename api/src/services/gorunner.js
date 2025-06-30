@@ -6,7 +6,7 @@ const docker = new Docker()
 async function executeGoCode(workDir) {
     return new Promise((resolve, reject) => {
         const containerOptions = {
-            Image: 'golang:latest-alpine',
+            Image: 'golang:tip-alpine3.22',
             Cmd: ['sh', '-c', 'cd /app && go mod init app && go mod tidy && go run .'],
             WorkingDir: '/app',
             HostConfig: {
