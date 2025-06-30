@@ -11,7 +11,7 @@ const registerUserHandler = async (req, res) => {
             res.status(400).json({ error: 'Username and password are required' })
             return
         }
-        
+        console.log('Register user: ', username, '  pw: ', password)
         const response = await userService.registerUser(username, password)
         res.status(200).json(response)
     } catch (error) {
@@ -33,6 +33,7 @@ const loginUserHandler = async (req, res) => {
             return
         }
 
+        console.log('Login user: ', username, '  pw: ', password)
         const token = await userService.loginUser(username, password)
         res.status(200).json({ token })
 
@@ -58,6 +59,7 @@ const updateUserHandler = async (req, res) => {
         return
     }
     
+    console.log('Update user: ', username, '  pw: ', password)
     try {
         const response = await userService.updateUser(user.username, newPassword)
         res.status(200).json(response)
