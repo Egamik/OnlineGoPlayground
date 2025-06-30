@@ -83,6 +83,7 @@ export const LoginPage = () => {
             if (response.status === 200) {
                 console.log('Signup successful:', response.data)
                 setSuccess('Sign up successful!')
+                setError('')
             } else {
                 console.error('Signup failed:', response.data)
                 setError('Signup failed. Please try again.')
